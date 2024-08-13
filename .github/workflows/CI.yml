@@ -9,7 +9,7 @@ permissions:
       contents: read
       
 env:
-  REPOSITORY: ${{ github.repository }}
+  REPOSITORY: ${{ secrets.REPOSITORY }}
   IMAGE_TAG: ci:${{ github.ref_name }}-${{ github.sha }}
   REGISTRY_USERNAME: ${{ github.actor }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
