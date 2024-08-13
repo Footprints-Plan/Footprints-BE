@@ -10,7 +10,7 @@ permissions:
       
 env:
   REPOSITORY: ${{ secrets.REPOSITORY }}
-  IMAGE_TAG: ci:${{ github.ref_name }}-${{ github.sha }}
+  IMAGE_TAG: :${{ github.ref_name }}-${{ github.sha }}
   REGISTRY_USERNAME: ${{ github.actor }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
