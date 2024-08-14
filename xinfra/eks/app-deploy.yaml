@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springapp-deploy
+spec:
+  selector:
+    matchLabels:
+      app: springapp-pod
+  template:
+    metadata:
+      labels:
+        app: springapp-pod
+    spec:
+      containers:
+        - name: springapp-container
+          image: <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<REPOSITORY_NAME>:<TAG>
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: ecr-registry-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springapp-svc
+spec:
+  selector:
+    app: springapp-pod
+  ports:
+    - port: 8081
+      targetPort: 8080
+  type: LoadBalancer
