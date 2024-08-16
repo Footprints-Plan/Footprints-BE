@@ -73,7 +73,7 @@ jobs:
 
  
       - name: Build Image
-        run: docker build --no-cache -t ${{ env.SPRING_IMAGE }} -f ./xinfra/docker/Dockerfile
+        run: docker build --no-cache -t ${{ env.SPRING_IMAGE }} -f ./xinfra/docker
 
       - name: Push to ECR
         run: docker push ${{ env.SPRING_IMAGE }}
