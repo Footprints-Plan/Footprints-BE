@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: springapp-container
-          image: ${SPRING_IMAGE}
+          image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY}:latest
           resources:
             limits:
               memory: "512Mi"

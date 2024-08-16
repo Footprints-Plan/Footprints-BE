@@ -58,6 +58,7 @@ jobs:
       - name: Set Spring Image Environment Variable
         run: |
           echo "SPRING_IMAGE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY }}${{ env.IMAGE_TAG }}" >> ${GITHUB_ENV}
+          echo "LATEST_IMAGE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY }}:latest" >> ${GITHUB_ENV}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -70,12 +71,12 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-
  
       - name: Build Image
         run: docker build --no-cache -t ${{ env.SPRING_IMAGE }} -f ./xinfra/docker/Dockerfile .
 
       - name: Push to ECR
-        run: docker push ${{ env.SPRING_IMAGE }}
-      
-      # Deploy는 전략 상의 후 작성 예정
+        run: |
+          docker push ${{ env.SPRING_IMAGE }}
+          docker tag ${{ env.SPRING_IMAGE }} ${{ env.LATEST_IMAGE }}
+          docker push ${{ env.LATEST_IMAGE }}
