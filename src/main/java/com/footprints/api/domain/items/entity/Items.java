@@ -1,7 +1,7 @@
 package com.footprints.api.domain.items.entity;
 
 import com.footprints.api.common.BaseTimeEntity;
-import com.footprints.api.domain.history.entity.History;
+import com.footprints.api.domain.category.entity.Category;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -26,19 +26,19 @@ public class Items extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private History history;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private Long price;
 
+    @NotNull
     private Long salePrice;
 
+    @NotNull
     private String imageUrl;
-
-
-
-
 
 }
