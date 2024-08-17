@@ -13,6 +13,7 @@ spec:
     spec:
       containers:
         - name: springapp-container
+          imagePullPolicy: Always
           image: 992382409375.dkr.ecr.ap-northeast-2.amazonaws.com/footprints:latest
           resources:
             limits:
