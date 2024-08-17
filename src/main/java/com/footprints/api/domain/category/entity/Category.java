@@ -1,13 +1,10 @@
-package com.footprints.api.domain.items.entity;
+package com.footprints.api.domain.category.entity;
 
 import com.footprints.api.common.BaseTimeEntity;
-import com.footprints.api.domain.category.entity.Category;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,25 +17,12 @@ import org.antlr.v4.runtime.misc.NotNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Builder
-public class Items extends BaseTimeEntity {
-
+public class Category extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Category category;
-
     @NotNull
-    private String name;
-
-    @NotNull
-    private Long price;
-
-    @NotNull
-    private Long salePrice;
-
-    @NotNull
-    private String imageUrl;
+    private String categoryName;
 
 }
