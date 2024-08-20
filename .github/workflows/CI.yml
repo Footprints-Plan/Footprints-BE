@@ -3,8 +3,6 @@ name: Continuous Integration
 on:
   push:
     branches: ["main"]
-    paths-ignore:
-      - 'xinfra/eks/**'
 
 permissions:
       id-token: write
@@ -82,17 +80,3 @@ jobs:
           docker push ${{ env.SPRING_IMAGE }}
           docker tag ${{ env.SPRING_IMAGE }} ${{ env.LATEST_IMAGE }}
           docker push ${{ env.LATEST_IMAGE }}
-
-      # 새로운 이미지 태그를 kustomization.yaml에 반영
-      - name: Update Kustomize Image Tag
-        run: |
-          sed -i "s/newTag: .*/newTag: ${GITHUB_SHA}/" xinfra/eks/overlays/production/kustomization.yaml
-
-      # 변경된 kustomization.yaml 파일을 Git에 커밋하고 푸시
-      - name: Commit and Push Changes
-        run: |
-          git config --global user.email "tjdgns8439@github.com"
-          git config --global user.name "tjdgns8439"
-          git add xinfra/eks/overlays/production/kustomization.yaml
-          git commit -m "Update image tag to ${GITHUB_SHA}"
-          git push origin main
