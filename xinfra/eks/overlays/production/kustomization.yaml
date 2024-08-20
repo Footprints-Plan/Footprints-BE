@@ -2,4 +2,4 @@ bases:
   - ../../base
 images:
   - name: 992382409375.dkr.ecr.ap-northeast-2.amazonaws.com/footprints
-    newTag: a3a0550a270f975af27f87788dc42433185f4590
+    newTag: 094ba90501b6a2737ce4b5b6074441583c887fbf
