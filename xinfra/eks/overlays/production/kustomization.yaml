@@ -1,0 +1,5 @@
+bases:
+  - ../../base
+images:
+  - name: 992382409375.dkr.ecr.ap-northeast-2.amazonaws.com/footprints
+    newTag: latest

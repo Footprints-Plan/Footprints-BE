@@ -54,7 +54,7 @@ jobs:
         run: |
           echo "REPOSITORY=$(echo $REPOSITORY | tr '[:upper:]' '[:lower:]')" >> ${GITHUB_ENV}
           echo "IMAGE_TAG=$(echo $IMAGE_TAG | tr '[:upper:]' '[:lower:]')" >> ${GITHUB_ENV}
-          
+
       - name: Set Spring Image Environment Variable
         run: |
           echo "SPRING_IMAGE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY }}${{ env.IMAGE_TAG }}" >> ${GITHUB_ENV}
@@ -80,3 +80,15 @@ jobs:
           docker push ${{ env.SPRING_IMAGE }}
           docker tag ${{ env.SPRING_IMAGE }} ${{ env.LATEST_IMAGE }}
           docker push ${{ env.LATEST_IMAGE }}
+
+      # 새로운 이미지 태그를 kustomization.yaml에 반영
+      - name: Update Kustomize Image Tag
+        run: |
+          sed -i "s/newTag: .*/newTag: ${GITHUB_SHA}/" xinfra/eks/overlays/production/kustomization.yaml
+
+      # 변경된 kustomization.yaml 파일을 Git에 커밋하고 푸시
+      - name: Commit and Push Changes
+        run: |
+          git add xinfra/eks/overlays/production/kustomization.yaml
+          git commit -m "Update image tag to ${GITHUB_SHA}"
+          git push origin main
