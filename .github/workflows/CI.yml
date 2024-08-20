@@ -89,6 +89,8 @@ jobs:
       # 변경된 kustomization.yaml 파일을 Git에 커밋하고 푸시
       - name: Commit and Push Changes
         run: |
+          git config --global user.email "tjdgns8439@github.com"
+          git config --global user.name "tjdgns8439"
           git add xinfra/eks/overlays/production/kustomization.yaml
           git commit -m "Update image tag to ${GITHUB_SHA}"
           git push origin main
