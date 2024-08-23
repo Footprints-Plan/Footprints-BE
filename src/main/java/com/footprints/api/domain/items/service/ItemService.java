@@ -3,10 +3,14 @@ package com.footprints.api.domain.items.service;
 import com.footprints.api.domain.category.entity.Category;
 import com.footprints.api.domain.category.repository.CategoryRepository;
 import com.footprints.api.domain.items.dto.ItemResponseDto.ItemDetailInfo;
+import com.footprints.api.domain.items.dto.ItemResponseDto.ItemRankingDto;
 import com.footprints.api.domain.items.entity.Items;
 import com.footprints.api.domain.items.repository.ItemRepository;
+import com.footprints.api.domain.items.repository.RedisItemRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
+    private final RedisItemRepository redisItemRepository;
 
     /**
      * 전체 조회
@@ -62,7 +67,20 @@ public class ItemService {
     /**
      * 랭킹 조회 -> 레디스 설정 이후
      */
-    public ResponseEntity<?> getItemRanking() {
-        return ResponseEntity.ok("");
+    public List<ItemRankingDto> getItemRanking() {
+        List<TypedTuple<String>> redisRankings = redisItemRepository.getRankings(0,-1);
+
+        return redisRankings.stream()
+            .map(tuple -> {
+                String itemId = tuple.getValue();
+                Double score = tuple.getScore();
+
+                assert itemId != null;
+                Items item = itemRepository.findById(Long.parseLong(itemId)).orElseThrow();
+
+                assert score != null;
+                return ItemRankingDto.toDto(item, score.longValue());
+            })
+            .collect(Collectors.toList());
     }
 }

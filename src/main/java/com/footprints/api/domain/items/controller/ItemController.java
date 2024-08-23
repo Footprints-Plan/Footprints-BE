@@ -1,6 +1,7 @@
 package com.footprints.api.domain.items.controller;
 
 import com.footprints.api.domain.items.dto.ItemResponseDto.ItemDetailInfo;
+import com.footprints.api.domain.items.dto.ItemResponseDto.ItemRankingDto;
 import com.footprints.api.domain.items.service.ItemService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +38,8 @@ public class ItemController {
     }
 
     @GetMapping("/rank")
-    public ResponseEntity<?> getItemRanking() {
-        return ResponseEntity.ok("");
+    public ResponseEntity<List<ItemRankingDto>> getItemRanking() {
+        return ResponseEntity.ok(itemService.getItemRanking());
     }
 
     @GetMapping("/category/{id}")
