@@ -47,6 +47,7 @@ public class ItemResponseDto {
         private Long score;
         public static ItemRankingDto toDto(Items entity, Long score) {
             return ItemRankingDto.builder()
+                .id(entity.getId())
                 .category(entity.getCategory().getCategoryName())
                 .name(entity.getName())
                 .price(entity.getPrice())
