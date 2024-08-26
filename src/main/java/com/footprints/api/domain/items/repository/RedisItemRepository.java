@@ -3,12 +3,10 @@ package com.footprints.api.domain.items.repository;
 import com.footprints.api.config.redis.BaseRedisRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Repository;
@@ -29,7 +27,7 @@ public class RedisItemRepository extends BaseRedisRepository implements Serializ
 
     public List<TypedTuple<String>> getRankings(long start, long end) {
         return zSetOperations.rangeWithScores(RANKING, start, end).stream()
-            .sorted(Comparator.comparingDouble(TypedTuple::getScore)) // Sort by score if needed
+            .sorted((a, b) -> Double.compare(b.getScore(), a.getScore())) // 역순으로 정렬
             .collect(Collectors.toList());
     }
 
