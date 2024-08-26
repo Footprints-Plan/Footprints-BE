@@ -52,6 +52,7 @@ public class ItemResponseDto {
                 .price(entity.getPrice())
                 .salePrice(entity.getPrice())
                 .imageUrl(entity.getImageUrl())
+                .score(score)
                 .build();
         }
     }
