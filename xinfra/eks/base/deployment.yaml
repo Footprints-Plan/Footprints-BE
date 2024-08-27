@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springapp-deploy
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: springapp-pod
+  template:
+    metadata:
+      labels:
+        app: springapp-pod
+    spec:
+      containers:
+        - name: springapp-pod
+          imagePullPolicy: Always
+          image: springapp-pod
+          ports:
+            - containerPort: 80

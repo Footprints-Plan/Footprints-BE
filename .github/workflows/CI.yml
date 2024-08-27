@@ -3,6 +3,8 @@ name: Continuous Integration
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - 'xinfra/eks/**'
 
 permissions:
       id-token: write
@@ -57,8 +59,8 @@ jobs:
 
       - name: Set Spring Image Environment Variable
         run: |
-          echo "SPRING_IMAGE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY }}${{ env.IMAGE_TAG }}" >> ${GITHUB_ENV}
-          echo "LATEST_IMAGE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY }}:latest" >> ${GITHUB_ENV}
+          echo "PROD_IMAGE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY }}${{ env.IMAGE_TAG }}-prod" >> ${GITHUB_ENV}
+          echo "DEV_IMAGE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY }}${{ env.IMAGE_TAG }}-dev" >> ${GITHUB_ENV}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -72,11 +74,26 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
  
-      - name: Build Image
-        run: docker build --no-cache -t ${{ env.SPRING_IMAGE }} -f ./xinfra/docker/Dockerfile .
+      - name: Build Prod Image
+        run: docker build --no-cache -t ${{ env.PROD_IMAGE }} -f ./xinfra/docker/DockerfileProd .
+
+      - name: Build Dev Image
+        run: docker build --no-cache -t ${{ env.DEV_IMAGE }} -f ./xinfra/docker/DevDockerfileDev .
 
       - name: Push to ECR
         run: |
-          docker push ${{ env.SPRING_IMAGE }}
-          docker tag ${{ env.SPRING_IMAGE }} ${{ env.LATEST_IMAGE }}
-          docker push ${{ env.LATEST_IMAGE }}
+          docker push ${{ env.PROD_IMAGE }}
+          docker push ${{ env.DEV_IMAGE }}
+
+      - name: Update Kustomize with new images
+        run: |
+          sed -i "s|image:.*-prod|image: ${{ env.PROD_IMAGE }}|g" ./xinfra/eks/overlays/prod/patch.yaml
+          sed -i "s|image:.*-dev|image: ${{ env.DEV_IMAGE }}|g" ./xinfra/eks/overlays/dev/patch.yaml
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add ./xinfra/eks/overlays/prod/patch.yaml ./xinfra/eks/overlays/dev/patch.yaml
+          git commit -m "Update kustomization files with new image tags"
+          git push origin ${{ github.ref }}
