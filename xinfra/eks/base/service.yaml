@@ -4,7 +4,7 @@ metadata:
   name: springapp-svc
 spec:
   selector:
-    app: springapp-pod
+    app: springapp-deploy
   ports:
     - port: 80
       targetPort: 8080

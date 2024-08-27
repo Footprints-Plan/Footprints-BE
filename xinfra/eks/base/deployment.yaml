@@ -8,15 +8,14 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: springapp-pod
+      app: springapp-deploy
   template:
     metadata:
       labels:
-        app: springapp-pod
+        app: springapp-deploy
     spec:
       containers:
-        - name: springapp-pod
+        - name: springapp-deploy
           imagePullPolicy: Always
-          image: springapp-pod
           ports:
             - containerPort: 80

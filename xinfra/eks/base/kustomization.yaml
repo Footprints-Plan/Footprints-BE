@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: springapp
 commonLabels:
-  app: springapp-pod
+  app: springapp-deploy
 
 resources:
   - ./deployment.yaml
