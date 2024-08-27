@@ -78,7 +78,7 @@ jobs:
         run: docker build --no-cache -t ${{ env.PROD_IMAGE }} -f ./xinfra/docker/DockerfileProd .
 
       - name: Build Dev Image
-        run: docker build --no-cache -t ${{ env.DEV_IMAGE }} -f ./xinfra/docker/DevDockerfileDev .
+        run: docker build --no-cache -t ${{ env.DEV_IMAGE }} -f ./xinfra/docker/DockerfileDev .
 
       - name: Push to ECR
         run: |
