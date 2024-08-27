@@ -5,9 +5,6 @@ namespace: springapp
 commonLabels:
   app: springapp-pod
 
-images:
-  - name: springapp-pod
-
 resources:
   - ./deployment.yaml
   - ./service.yaml
