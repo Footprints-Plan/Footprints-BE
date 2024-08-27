@@ -7,4 +7,4 @@ spec:
     spec:
       containers:
         - name: springapp-deploy
-          image: 992382409375.dkr.ecr.ap-northeast-2.amazonaws.com/footprints-dev:latest
+          image: 992382409375.dkr.ecr.ap-northeast-2.amazonaws.com/footprints:main-3e90ad669294af6dcd944dfd3f04d18f7ff03a8a-dev:latest
