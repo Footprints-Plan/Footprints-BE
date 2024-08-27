@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springapp-deploy
+spec:
+  template:
+    spec:
+      containers:
+        - name: springapp-deploy
+          image: 992382409375.dkr.ecr.ap-northeast-2.amazonaws.com/footprints-prod:latest
