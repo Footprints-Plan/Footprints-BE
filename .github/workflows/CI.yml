@@ -87,8 +87,9 @@ jobs:
 
       - name: Update Kustomize with new images
         run: |
-          sed -i "s|image:.*-prod|image: ${{ env.PROD_IMAGE }}|g" ./xinfra/eks/overlays/prod/patch.yaml
-          sed -i "s|image:.*-dev|image: ${{ env.DEV_IMAGE }}|g" ./xinfra/eks/overlays/dev/patch.yaml
+          sed -i "s|image:.*-prod:latest|image: ${{ env.PROD_IMAGE }}|g; s|image:.*-prod|image: ${{ env.PROD_IMAGE }}|g" ./xinfra/eks/overlays/prod/patch.yaml
+          sed -i "s|image:.*-dev:latest|image: ${{ env.DEV_IMAGE }}|g; s|image:.*-dev|image: ${{ env.DEV_IMAGE }}|g" ./xinfra/eks/overlays/dev/patch.yaml
+    
 
       - name: Commit and Push Changes
         run: |
