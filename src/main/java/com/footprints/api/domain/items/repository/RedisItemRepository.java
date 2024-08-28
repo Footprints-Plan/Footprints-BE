@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public class RedisItemRepository extends BaseRedisRepository implements Serializable  {
     private final RedisTemplate<String, String> redisTemplate;
 
-    public static final String RANKING = "item_rankings"; // 채팅룸에 입장한 클라이언트의 sessionId와 채팅룸 id를 맵핑한 정보 저장
+    public static final String RANKING = "Item_rankings"; // 채팅룸에 입장한 클라이언트의 sessionId와 채팅룸 id를 맵핑한 정보 저장
     private ZSetOperations<String, String> zSetOperations;
 
     @PostConstruct
