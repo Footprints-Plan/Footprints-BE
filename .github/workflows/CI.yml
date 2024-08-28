@@ -61,6 +61,7 @@ jobs:
         run: |
           echo "PROD_IMAGE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY }}${{ env.IMAGE_TAG }}-prod" >> ${GITHUB_ENV}
           echo "DEV_IMAGE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY }}${{ env.IMAGE_TAG }}-dev" >> ${GITHUB_ENV}
+          echo "EU_IMAGE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY }}${{ env.IMAGE_TAG }}-eu" >> ${GITHUB_ENV}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -79,6 +80,9 @@ jobs:
 
       - name: Build Dev Image
         run: docker build --no-cache -t ${{ env.DEV_IMAGE }} -f ./xinfra/docker/DockerfileDev .
+
+      - name: Build EU Image
+        run: docker build --no-cache -t ${{ env.DEV_IMAGE }} -f ./xinfra/docker/DockerfileEu .
 
       - name: Push to ECR
         run: |
