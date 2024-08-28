@@ -25,4 +25,4 @@ public class Category extends BaseTimeEntity {
     @NotNull
     private String categoryName;
 
-}
+} 
