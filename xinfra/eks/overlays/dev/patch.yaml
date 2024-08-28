@@ -8,4 +8,4 @@ spec:
       containers:
         - name: springapp-deploy
           imagePullPolicy: Always
-          image: 992382409375.dkr.ecr.ap-northeast-2.amazonaws.com/footprints:main-1d9362aa6f2a4f8c6e8be3f1ba4d09bc412822eb-dev
+          image: 992382409375.dkr.ecr.ap-northeast-2.amazonaws.com/footprints:main-026af4e4edeefccc385884b2200ae7beb60f2dca-dev
