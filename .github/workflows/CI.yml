@@ -82,12 +82,13 @@ jobs:
         run: docker build --no-cache -t ${{ env.DEV_IMAGE }} -f ./xinfra/docker/DockerfileDev .
 
       - name: Build EU Image
-        run: docker build --no-cache -t ${{ env.DEV_IMAGE }} -f ./xinfra/docker/DockerfileEu .
+        run: docker build --no-cache -t ${{ env.EU_IMAGE }} -f ./xinfra/docker/DockerfileEu .
 
       - name: Push to ECR
         run: |
           docker push ${{ env.PROD_IMAGE }}
           docker push ${{ env.DEV_IMAGE }}
+          docker push ${{ env.EU_IMAGE }}
 
       - name: Update Kustomize with new images
         run: |
