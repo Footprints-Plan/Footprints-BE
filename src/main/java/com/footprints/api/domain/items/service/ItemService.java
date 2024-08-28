@@ -8,6 +8,7 @@ import com.footprints.api.domain.items.entity.Items;
 import com.footprints.api.domain.items.repository.ItemRepository;
 import com.footprints.api.domain.items.repository.RedisItemRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
@@ -68,18 +69,20 @@ public class ItemService {
      * 랭킹 조회 -> 레디스 설정 이후
      */
     public List<ItemRankingDto> getItemRanking() {
-        List<TypedTuple<String>> redisRankings = redisItemRepository.getRankings(0,-1);
+        List<TypedTuple<String>> redisRankings = redisItemRepository.getRankings(0,11);
 
         return redisRankings.stream()
             .map(tuple -> {
                 String itemId = tuple.getValue();
                 Double score = tuple.getScore();
+                System.out.println("itemId = " + itemId + ","+"score = " + score);
 
                 assert itemId != null;
-                Items item = itemRepository.findById(Long.parseLong(itemId)).orElseThrow();
-
-                assert score != null;
-                return ItemRankingDto.toDto(item, score.longValue());
+                Optional<Items> item = itemRepository.findById(Long.parseLong(itemId));
+                if(item.isEmpty()){
+                    item = itemRepository.findById(1L);
+                }
+                return ItemRankingDto.toDto(item.get(), score.longValue());
             })
             .collect(Collectors.toList());
     }
