@@ -31,12 +31,6 @@ public class ItemController {
         return ResponseEntity.ok(itemService.getItemById(id));
     }
 
-    //이름 조회
-    @GetMapping
-    public ResponseEntity<List<ItemDetailInfo>>  getItemByName(@RequestParam String name){
-        return ResponseEntity.ok(itemService.getItemByName(name));
-    }
-
     @GetMapping("/rank")
     public ResponseEntity<List<ItemRankingDto>> getItemRanking() {
         return ResponseEntity.ok(itemService.getItemRanking());
