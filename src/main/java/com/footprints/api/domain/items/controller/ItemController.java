@@ -40,4 +40,5 @@ public class ItemController {
     public ResponseEntity<List<ItemDetailInfo>> getItemByCategory(@PathVariable Long id) {
         return ResponseEntity.ok(itemService.getItemByCategory(id));
     }
+
 }
